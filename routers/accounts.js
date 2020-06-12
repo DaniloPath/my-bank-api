@@ -117,4 +117,36 @@ router.put("/", (req, res) => {
 
 })
 
+router.post("/transaction", (req, res) => {
+    let params = req.body
+    fs.readFile("accounts.json", "utf8", (err, data) => {
+        try {
+            if (err) throw err
+            let json = JSON.parse(data)
+            let index = json.accounts.findIndex(account => account.id === params.id)
+
+            if ((params.value < 0) && (json.accounts[index].balance + params.value < 0)) {
+                throw new Error("Não há saldo suficiente!")
+            }
+
+            json.accounts[index].balance += params.value
+
+
+            fs.writeFile("accounts.json", JSON.stringify(json), err => {
+                if (err) {
+                    res.status(400).send({ error: err.message })
+                } else {
+                    res.end()
+                }
+            })
+
+            res.send("Transação realizada com sucesso " + "R$" + params.value)
+        } catch (err) {
+            res.status(400).send({ error: err.message })
+        }
+    })
+
+
+})
+
 module.exports = router
