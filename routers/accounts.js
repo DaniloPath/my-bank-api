@@ -97,8 +97,10 @@ router.put("/", (req, res) => {
             if (err) throw err
             let json = JSON.parse(data)
             let oldIndex = json.accounts.findIndex(account => account.id === newAccount.id)
+            json.accounts[oldIndex].name = newAccount.name
+            json.accounts[oldIndex].balance = newAccount.balance
 
-            json.accounts[oldIndex] = newAccount
+
             fs.writeFile("accounts.json", JSON.stringify(json), err => {
                 if (err) {
                     res.status(400).send({ error: err.message })
