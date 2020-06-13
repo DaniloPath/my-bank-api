@@ -16,8 +16,11 @@ router.post("/", async (req, res) => {
 
         res.send("Dados cadastrados")
         res.end()
+
+        logger.info(`POST /account - ${JSON.stringify(account)}`)
     } catch (err) {
         res.status(400).send({ error: err.message })
+        logger.error(`POST /account - ${err.message}`)
     }
 })
 
@@ -29,8 +32,11 @@ router.get('/', async (_, res) => {
         delete jsn.nextId
         res.send(jsn)
 
+        logger.info(`GET /account`)
+
     } catch (err) {
         res.status(400).send({ error: err.message })
+        logger.error(`GET /account - ${err.message}`)
     }
 
 })
@@ -44,13 +50,15 @@ router.get("/:id", async (req, res) => {
         const account = json.accounts.find(account => account.id === parseInt(req.params.id, 10))
         if (account) {
             res.send(account)
+            logger.info(`GET /account/:id - ${JSON.stringify(account)}`)
 
         } else {
             res.end()
-        }
-
+            logger.error(`GET /account/:id`)
+        }        
     } catch (err) {
         res.status(400).send({ error: err.message })
+        logger.error(`GET /account/:id - ${err.message}`)
 
     }
 })
@@ -68,8 +76,12 @@ router.delete("/:id", async (req, res) => {
 
         res.send("Registro deletado")
         res.end()
+
+        logger.info(`DELETE /account/:id - ${req.params.id}`)
+
     } catch (err) {
         res.status(400).send({ error: err.message })
+        logger.error(`DELETE /account/:id - ${err.message}`)
     }
 })
 
@@ -89,8 +101,11 @@ router.put("/", async (req, res) => {
 
         res.send("Atualização realizada com sucesso!")
         res.end()
+
+        logger.info(`PUT /account - ${JSON.stringify(newAccount)}`)
     } catch (err) {
         res.status(400).send({ error: err.message })
+        logger.error(`PUT /account - ${err.message}`)
     }
 })
 
@@ -119,8 +134,11 @@ router.post("/transaction", async (req, res) => {
 
         res.send("Transação de " + transaction + " realizada com sucesso: " + "R$" + params.value)
         res.end()
+
+        logger.info(`POST /account/transaction - ${JSON.stringify(params)}`)
     } catch (err) {
         res.status(400).send({ error: err.message })
+        logger.error(`POST /account/transaction - ${err.message}`)
     }
 })
 
