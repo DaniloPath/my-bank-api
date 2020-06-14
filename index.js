@@ -4,6 +4,7 @@ const fs = require("fs").promises
 const accountsRouter = require("./routers/accounts.js")
 const winston = require("winston")
 const swaggerUi = require("swagger-ui-express")
+const cors = require("cors")
 
 const swaggerDoc = require("./doc.js")
 
@@ -31,6 +32,14 @@ app.use(express.json())
 app.use("/account", accountsRouter)
 
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerDoc))
+
+/*
+usar para liberar todos:
+app.use(cors())
+
+Se quiser liberar só um específico, basta usar cors depois da vígula tipo:
+app.get("account", cors(), async (req, res) =>{})
+*/
 
 
 app.listen(3000, async () => {
