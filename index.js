@@ -3,6 +3,9 @@ const app = express()
 const fs = require("fs").promises
 const accountsRouter = require("./routers/accounts.js")
 const winston = require("winston")
+const swaggerUi = require("swagger-ui-express")
+
+const swaggerDoc = require("./doc.js")
 
 const {combine, timestamp, label, printf} = winston.format
 const myFormat = printf(({level, message, label, timestamp})=>{
@@ -26,6 +29,8 @@ app.use(express.json())
 
 //aciona os routes exportado do arquivo accounts.js 
 app.use("/account", accountsRouter)
+
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
 
 app.listen(3000, async () => {
